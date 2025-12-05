@@ -1,0 +1,27 @@
+[general]
+live_config_reload = true
+
+# Sets window dimensions
+[window]
+dimensions = { columns = 80, lines = 18 }
+padding = { x = 8, y = 8 }
+decorations = "None"
+
+[font]
+# normal = { family = "JetBrainsMono Nerd Font", style = "bold" }
+# normal = { family = "Monaco", style = "regular" }
+normal = { family = "Cascadia Code NF", style = "bold" }
+size = 10
+
+[cursor]
+style = { shape = "underline", blinking = "Always" }
+blink_interval = 400
+
+unfocused_hollow = false
+thickness = 0.2
+
+[mouse]
+hide_when_typing = true
+
+# [debug]
+# render_timer = true

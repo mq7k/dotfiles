@@ -1,0 +1,13 @@
+# Ignores downloaded tmux plugins.
+.config/tmux/plugins/**
+
+**/*.pyc
+
+.config/discord/**
+.config/Bitwarden/**
+.config/pulse/**
+.config/pavucontrol.ini
+.config/dconf/**
+
+# May contain other licenses, we download them from source.
+dotresources/**
