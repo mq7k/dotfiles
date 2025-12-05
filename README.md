@@ -78,7 +78,7 @@ Following packages are downloaded:
 - tree 
 - adw-gtk-theme 
 
-Neovim is configured with a custom modified NvChad(https://github.com/NvChad/NvChad.git) configuration.
+Neovim is configured with a custom modified [NvChad](https://github.com/NvChad/NvChad.git) configuration.
 zsh is configured with the following plugins:
 - fzf
 - starship
