@@ -1,0 +1,5 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Just an empty config for now.
+# It exists just because I know where and how
+# to find it in case I'll need in the future.
