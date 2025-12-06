@@ -11,3 +11,12 @@
 
 # May contain other licenses, we download them from source.
 dotresources/**
+
+# Machine-specific state.
+.config/QtProject.conf
+
+# User-specific state, caches and profile data.
+.config/libreoffice/**
+
+# Re-generated with `xdg-mime` during installation.
+.config/mimeapps.list
