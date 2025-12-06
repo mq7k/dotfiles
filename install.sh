@@ -25,7 +25,7 @@ packages+="noto-fonts-emoji ttf-jetbrains-mono-nerd ttf-hack ttf-cascadia-code "
 packages+="wayland wayland-protocols "
 
 # Wayland utilities.
-packages+="wlroots0.17 python-pywlroots wl-clipboard xorg-xwayland "
+packages+="wlroots0.17 python-pywlroots wl-clipboard xorg-xwayland xdg-desktop-portal xdg-desktop-portal-hyprland "
 
 # Install Hyprland wm, lock screen, screen shot, status bar tools and notification daemon.
 packages+="hyprland hyprlock hyprshot waybar swaync "
@@ -34,10 +34,10 @@ packages+="hyprland hyprlock hyprshot waybar swaync "
 packages+="wofi "
 
 # Shell
-packages+="zsh "
+packages+="zsh zoxide"
 
 # Terminal emulator, terminal multiplexer and other terminal-related applications.
-packages+="alacritty tmux ranger "
+packages+="alacritty tmux "
 
 # Terminal file editor and a few required packages for optional features.
 packages+="neovim fzf ripgrep "
@@ -49,7 +49,22 @@ packages+="libpipewire pipewire pipewire-pulse pipewire-audio pipewire-session-m
 packages+="gcc arm-none-eabi-gcc arm-none-eabi-newlib clang ninja doxygen cmake make gdb valgrind openocd "
 
 # Install additional useful packages.
-packages+="firefox bitwarden discord htop nemo gnome-keyring greetd man-db zoxide vlc git grim stow shotwell tree "
+packages+="firefox htop gnome-keyring man-db vlc git libreoffice greetd tree stow "
+extra_packages="bitwarden nemo "
+
+while :; do
+    echo "Do you want to install the following additional packages?"
+    echo "$extra_packages"
+    echo ""
+    read -p "[y/n]? " -n 1 -r ans
+    case "$ans" in
+        y|Y)
+          packages+=extra_packages
+          break 
+          ;;
+        n|N) break ;;
+    esac
+done
 
 # Dark GTK theme.
 packages+="adw-gtk-theme "
@@ -96,6 +111,22 @@ exec_as_root "echo -e \"\n[initial_session]\ncommand = \"hyprland\"\nuser = \"$u
 # Enables greet daemon.
 exec_as_root "systemctl enable greetd"
 
+# Sets `swappy` as default application for a few image formats.
+xdg-mime default swappy.desktop image/png
+xdg-mime default swappy.desktop image/jpg
+xdg-mime default swappy.desktop image/webp
+
+# Sets `vlc` as default application for a few video formats.
+xdg-mime default vlc.desktop video/mp4
+xdg-mime default vlc.desktop video/mpeg
+xdg-mime default vlc.desktop video/ogg
+
+# Same thing but for audio formats.
+xdg-mime default vlc.desktop audio/mp3
+xdg-mime default vlc.desktop audio/aac
+xdg-mime default vlc.desktop audio/mpeg
+xdg-mime default vlc.desktop audio/ogg
+xdg-mime default vlc.desktop audio/webm
 
 #
 # Applications-specific configuration.
