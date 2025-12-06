@@ -24,6 +24,59 @@ ask_confirm() {
     done
 }
 
+generate_choices_arr() {
+  local -n options="$1"
+  local -n arr="$2"
+
+  for opt in "${options[@]}"; do
+      if [[ "$opt" == *":1" ]]; then
+          arr+=(1)
+      else
+          arr+=(0)
+      fi
+  done
+}
+
+draw_multi_choice_menu() {
+  # Only works in Bash.
+  # Make sure to execute this before switching to zsh.
+  local -n options="$1"
+  local -n selected="$2"
+
+  # Clears the screen.
+  printf '\033[2J'
+
+  # Sets the cursor back to the original position.
+  printf '\033[H'
+
+  for i in "${!options[@]}"; do
+      mark="[ ]"
+      (( selected[i] )) && mark="[x]"
+      option="${options[i]}"
+      option=`echo $option | cut -d ':' -f 1`
+      printf "%d. %s %s\n" $((i+1)) "$option" "$mark"
+  done
+}
+
+open_multi_choice_menu() {
+  local -n options="$1"
+  local -n selected="$2"
+  draw_multi_choice_menu $1 $2
+
+  len=${#options[@]}
+  regex="^[1-$len]$"
+  while :; do
+      read -r -p "Select option to toggle (Enter to finish): " choice
+      [[ -z "$choice" ]] && break
+
+      if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= len )); then
+          idx=$((choice-1))
+          ((selected[idx] ^= 1))
+          draw_multi_choice_menu $1 $2
+      fi
+  done
+}
+
 if [ "$(id -u)" -eq 0 ]; then
   echo "Do not run this script as root."
   exit 1
@@ -62,19 +115,26 @@ packages+="neovim fzf ripgrep "
 packages+="libpipewire pipewire pipewire-pulse pipewire-audio pipewire-session-manager pavucontrol "
 
 # Compiling and programmming tools.
-packages+="gcc arm-none-eabi-gcc arm-none-eabi-newlib clang ninja doxygen cmake make gdb valgrind openocd "
+packages+="gcc arm-none-eabi-gcc clang ninja doxygen cmake make gdb valgrind "
 
 # Install additional useful packages.
-packages+="firefox htop gnome-keyring man-db vlc git libreoffice tree stow nemo "
-extra_packages="bitwarden "
+packages+="firefox htop stow git man-db "
 
-echo "Do you want to install the following additional packages?"
-echo "$extra_packages"
-echo
+# Selects optional packages.
+extra_packages=(
+  "firefox:1" "vlc:1" "libreoffice" "tree:1" "nemo:1"
+  "gnome-keyring:1"
+  "bitwarden" "discord" "arm-none-eabi-newlib" "openocd"
+)
+extra_packages_selected=()
+generate_choices_arr extra_packages extra_packages_selected
+open_multi_choice_menu extra_packages extra_packages_selected
 
-if ask_confirm "[y/n]? "; then
-  packages+="$extra_packages"
-fi
+for i in "${!extra_packages[@]}"; do
+  name="${extra_packages[i]}"
+  name=`echo $name | cut -d ':' -f 1`
+  ((extra_packages_selected[i])) && packages+="$name "
+done
 
 # Dark GTK theme.
 packages+="adw-gtk-theme "
