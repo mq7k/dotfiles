@@ -162,7 +162,7 @@ packages+="libpipewire pipewire pipewire-pulse pipewire-audio pipewire-session-m
 packages+="gcc arm-none-eabi-gcc clang ninja doxygen cmake make gdb valgrind "
 
 # Install additional useful packages.
-packages+="firefox htop stow git man-db "
+packages+="firefox htop stow git man-db flameshot "
 
 # Selects optional packages.
 extra_pkg_title="Select what package you want to install."
