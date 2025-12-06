@@ -56,6 +56,7 @@ alias ll='ls --color -hla'
 
 export LD_LIBRARY_PATH="/usr/lib:/usr/local/lib"
 export PATH="$PATH:~/.local/bin"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
