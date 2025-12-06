@@ -50,7 +50,7 @@ Following packages are downloaded:
 - pavucontrol 
 - gcc 
 - arm-none-eabi-gcc 
-- arm-none-eabi-newlib 
+- arm-none-eabi-newlib (optional)
 - clang 
 - ninja 
 - doxygen 
@@ -58,22 +58,22 @@ Following packages are downloaded:
 - make 
 - gdb 
 - valgrind 
-- openocd 
-- firefox 
-- bitwarden 
-- discord 
-- htop 
-- nemo 
-- gnome-keyring 
-- greetd 
+- openocd (optional) 
+- firefox (optional)
+- bitwarden (optional) 
+- discord (optional)
+- htop
+- nemo (optional)
+- gnome-keyring (optional)
+- greetd
 - man-db 
 - zoxide 
-- vlc 
-- git 
-- grim 
+- vlc (optional)
+- git
+- grim
 - stow 
-- shotwell 
-- tree 
+- flameshot 
+- tree (optional) 
 - adw-gtk-theme 
 
 Neovim is configured with a custom modified [NvChad](https://github.com/NvChad/NvChad.git) configuration.
