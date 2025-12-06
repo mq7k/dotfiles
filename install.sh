@@ -9,19 +9,19 @@ exec_as_root() {
 }
 
 ask_confirm() {
-    while :; do
-      read -r -p "${1:-Are you sure? [y/N]} " response
-      case "$response" in
-          [yY]) 
-              return 0
-              break
-              ;;
-          [nN])
-              return 1
-              break
-              ;;
-      esac
-    done
+  while :; do
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case "$response" in
+      [yY]) 
+        return 0
+        break
+        ;;
+      [nN])
+        return 1
+        break
+        ;;
+    esac
+  done
 }
 
 generate_choices_arr() {
@@ -29,11 +29,11 @@ generate_choices_arr() {
   local -n arr="$2"
 
   for opt in "${options[@]}"; do
-      if [[ "$opt" == *":1" ]]; then
-          arr+=(1)
-      else
-          arr+=(0)
-      fi
+    if [[ "$opt" == *":1" ]]; then
+        arr+=(1)
+    else
+        arr+=(0)
+    fi
   done
 }
 
@@ -42,6 +42,7 @@ draw_multi_choice_menu() {
   # Make sure to execute this before switching to zsh.
   local -n options="$1"
   local -n selected="$2"
+  local -n title="$3"
 
   # Clears the screen.
   printf '\033[2J'
@@ -49,31 +50,74 @@ draw_multi_choice_menu() {
   # Sets the cursor back to the original position.
   printf '\033[H'
 
+  echo "$title"
+
   for i in "${!options[@]}"; do
-      mark="[ ]"
-      (( selected[i] )) && mark="[x]"
-      option="${options[i]}"
-      option=`echo $option | cut -d ':' -f 1`
-      printf "%d. %s %s\n" $((i+1)) "$option" "$mark"
+    mark="[ ]"
+    (( selected[i] )) && mark="[x]"
+    option="${options[i]}"
+    option=`echo $option | cut -d ':' -f 1`
+    printf "%d. %s %s\n" $((i+1)) "$option" "$mark"
   done
 }
 
 open_multi_choice_menu() {
   local -n options="$1"
   local -n selected="$2"
-  draw_multi_choice_menu $1 $2
+  local -n title="$3"
+  draw_multi_choice_menu $1 $2 $3
 
   len=${#options[@]}
-  regex="^[1-$len]$"
   while :; do
-      read -r -p "Select option to toggle (Enter to finish): " choice
-      [[ -z "$choice" ]] && break
+    read -r -p "Select option to toggle (Enter to finish): " choice
+    [[ -z "$choice" ]] && break
 
-      if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= len )); then
-          idx=$((choice-1))
-          ((selected[idx] ^= 1))
-          draw_multi_choice_menu $1 $2
-      fi
+    if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= len )); then
+      idx=$((choice-1))
+      ((selected[idx] ^= 1))
+      draw_multi_choice_menu $1 $2 $3
+    fi
+  done
+}
+
+draw_radio_buttons_menu() {
+  local -n options="$1"
+  selected="$2"
+  local -n title="$3"
+
+  # Clears the screen.
+  printf '\033[2J'
+
+  # Sets the cursor back to the original position.
+  printf '\033[H'
+
+  echo "$title"
+
+  for i in "${!options[@]}"; do
+    mark="[ ]"
+    (( selected == i )) && mark="[x]"
+    option="${options[i]}"
+    option=`echo $option | cut -d ':' -f 1`
+    printf "%d. %s %s\n" $((i+1)) "$option" "$mark"
+  done
+}
+
+open_radio_buttons_menu() {
+  local -n options="$1"
+  local -n selected="$2"
+  local -n title="$3"
+  draw_radio_buttons_menu $1 "$selected" $3
+
+  len=${#options[@]}
+  while :; do
+    read -r -p "Select an option (Enter to confirm): " choice
+    [[ -z "$choice" ]] && break
+
+    if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= len )); then
+      idx=$((choice-1))
+      selected="$idx"
+    fi
+    draw_radio_buttons_menu $1 "$selected" $3
   done
 }
 
@@ -121,6 +165,7 @@ packages+="gcc arm-none-eabi-gcc clang ninja doxygen cmake make gdb valgrind "
 packages+="firefox htop stow git man-db "
 
 # Selects optional packages.
+extra_pkg_title="Select what package you want to install."
 extra_packages=(
   "firefox:1" "vlc:1" "libreoffice" "tree:1" "nemo:1"
   "gnome-keyring:1"
@@ -128,7 +173,7 @@ extra_packages=(
 )
 extra_packages_selected=()
 generate_choices_arr extra_packages extra_packages_selected
-open_multi_choice_menu extra_packages extra_packages_selected
+open_multi_choice_menu extra_packages extra_packages_selected extra_pkg_title
 
 for i in "${!extra_packages[@]}"; do
   name="${extra_packages[i]}"
@@ -147,7 +192,8 @@ exec_as_root "pacman -S $packages"
 #
 
 # Sets the dark theme.
-gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Creates the resource directory.
 mkdir dotresources
@@ -164,6 +210,27 @@ if [ -e "dconf-settings.conf" ]; then
   dconf load / < dconf-settings.conf
 fi
 
+styles=()
+for style_dir in ~/.config/waybar_styles/*; do
+  style="${style_dir##*/}"
+  style="${style#*.}"
+  style="${style/./ }"
+  styles+=("$style")
+done
+
+title_style="Select a waybar style."
+selected_style=0
+open_radio_buttons_menu styles selected_style title_style
+style="${styles[selected_style]}"
+
+# Converts to lower case.
+style="${style,,}"
+
+# Replace ' ' with '.'.
+style="${style/ /.}"
+
+# Gets the substring from the last '/' until the end.
+ln -s "./waybar_styles/waybar.$style" ".config/waybar"
 
 #
 # System configuration.
