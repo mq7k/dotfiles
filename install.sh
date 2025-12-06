@@ -8,6 +8,22 @@ exec_as_root() {
   fi
 }
 
+ask_confirm() {
+    while :; do
+      read -r -p "${1:-Are you sure? [y/N]} " response
+      case "$response" in
+          [yY]) 
+              return 0
+              break
+              ;;
+          [nN])
+              return 1
+              break
+              ;;
+      esac
+    done
+}
+
 if [ "$(id -u)" -eq 0 ]; then
   echo "Do not run this script as root."
   exit 1
@@ -25,7 +41,7 @@ packages+="noto-fonts-emoji ttf-jetbrains-mono-nerd ttf-hack ttf-cascadia-code "
 packages+="wayland wayland-protocols "
 
 # Wayland utilities.
-packages+="wlroots0.17 python-pywlroots wl-clipboard xorg-xwayland xdg-desktop-portal xdg-desktop-portal-hyprland "
+packages+="wlroots0.17 python-pywlroots wl-clipboard xorg-xwayland xdg-desktop-portal xdg-desktop-portal-hyprland greetd "
 
 # Install Hyprland wm, lock screen, screen shot, status bar tools and notification daemon.
 packages+="hyprland hyprlock hyprshot waybar swaync "
@@ -33,8 +49,8 @@ packages+="hyprland hyprlock hyprshot waybar swaync "
 # Applications launcher.
 packages+="wofi "
 
-# Shell
-packages+="zsh zoxide"
+# Shell.
+packages+="zsh zoxide "
 
 # Terminal emulator, terminal multiplexer and other terminal-related applications.
 packages+="alacritty tmux "
@@ -49,22 +65,16 @@ packages+="libpipewire pipewire pipewire-pulse pipewire-audio pipewire-session-m
 packages+="gcc arm-none-eabi-gcc arm-none-eabi-newlib clang ninja doxygen cmake make gdb valgrind openocd "
 
 # Install additional useful packages.
-packages+="firefox htop gnome-keyring man-db vlc git libreoffice greetd tree stow "
-extra_packages="bitwarden nemo "
+packages+="firefox htop gnome-keyring man-db vlc git libreoffice tree stow nemo "
+extra_packages="bitwarden "
 
-while :; do
-    echo "Do you want to install the following additional packages?"
-    echo "$extra_packages"
-    echo ""
-    read -p "[y/n]? " -n 1 -r ans
-    case "$ans" in
-        y|Y)
-          packages+=extra_packages
-          break 
-          ;;
-        n|N) break ;;
-    esac
-done
+echo "Do you want to install the following additional packages?"
+echo "$extra_packages"
+echo
+
+if ask_confirm "[y/n]? "; then
+  packages+="$extra_packages"
+fi
 
 # Dark GTK theme.
 packages+="adw-gtk-theme "
@@ -161,10 +171,7 @@ sed -i "s/from pygls.server/from pygls.lsp.server/g" ~/.local/share/nvim/mason/p
 #
 
 echo "Configuration complete"
-read -p "Do you want to reboot now (Recommended)? " -n 1 -r
-if [[ "$REPLY" =~ ^[Yy]$ ]]
-then
-  echo -e "\nRebooting"
+
+if ask_confirm "Do you want to reboot now (Recommended) [y/n]?"; then
   reboot
 fi
-echo ""
