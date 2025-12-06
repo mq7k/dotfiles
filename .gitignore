@@ -8,6 +8,7 @@
 .config/pulse/**
 .config/pavucontrol.ini
 .config/dconf/**
+.config/waybar
 
 # May contain other licenses, we download them from source.
 dotresources/**
