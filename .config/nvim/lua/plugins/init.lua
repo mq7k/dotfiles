@@ -55,7 +55,7 @@ return {
 
             config.defaults.file_ignore_patterns = {
                 "node_modules",
-                "build",
+                "build/",
                 "%.vscode",
                 "%.git",
                 "%.cache",
