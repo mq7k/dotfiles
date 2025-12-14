@@ -27,9 +27,13 @@ bindkey '^a' autosuggest-accept
 # Fixes special chars and key combinations.
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
-bindkey  "^[[H"   beginning-of-line
-bindkey  "^[[F"   end-of-line
-bindkey  "^[[3~"  delete-char
+bindkey "^[[H"   beginning-of-line
+bindkey "^[[F"   end-of-line
+bindkey "^[[3~"  delete-char
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5A" beginning-of-line
+bindkey "^[[1;5B" end-of-line
 
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
