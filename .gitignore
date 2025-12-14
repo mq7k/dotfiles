@@ -9,6 +9,10 @@
 .config/pavucontrol.ini
 .config/dconf/**
 .config/waybar
+.config/teams
+.config/Microsoft
+.config/qalculate
+.config/Kitware
 
 # May contain other licenses, we download them from source.
 dotresources/**
@@ -21,3 +25,4 @@ dotresources/**
 
 # Re-generated with `xdg-mime` during installation.
 .config/mimeapps.list
+
