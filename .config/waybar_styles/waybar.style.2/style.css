@@ -95,7 +95,8 @@ button:hover {
 #idle_inhibitor,
 #scratchpad,
 #power-profiles-daemon,
-#mpd {
+#mpd,
+#custom-gpu {
     color: #ffffff;
     border-radius: 8px;
     margin: 4px 3px;
@@ -120,7 +121,8 @@ button:hover {
 #idle_inhibitor:hover,
 #scratchpad:hover,
 #power-profiles-daemon:hover,
-#mpd:hover {
+#mpd:hover,
+#custom-gpu:hover {
     background-color: @module-right-bg-hover-colr;
 }
 

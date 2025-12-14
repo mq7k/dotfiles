@@ -14,6 +14,7 @@
       "disk",
       "custom/memory",
       "cpu",
+      "custom/gpu",
       "network",
       "pulseaudio",
       "clock",
@@ -51,6 +52,13 @@
       "format": "{usage}% ",
       "tooltip": true,
       "interval": 1
+    },
+    "custom/gpu": {
+      "exec": "~/.config/waybar/scripts/gpu.py",
+      "on-click": "",
+      "format": "{}% \udb81\udffd",
+      "interval": 1,
+      "return-type": "str"
     },
     "memory": {
       "format": "{used} GiB \uefc5",

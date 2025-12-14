@@ -96,7 +96,8 @@ button:hover {
 #scratchpad,
 #power-profiles-daemon,
 #mpd,
-#custom-memory {
+#custom-memory,
+#custom-gpu {
     color: #ffffff;
     border-radius: 8px;
     /* margin: 4px 3px; */
@@ -122,7 +123,8 @@ button:hover {
 #scratchpad:hover,
 #power-profiles-daemon:hover,
 #mpd:hover,
-#custom-memory:hover {
+#custom-memory:hover,
+#custom-gpu:hover {
   background-color: @module-right-bg-hover-colr;
 }
 
