@@ -11,7 +11,7 @@ decorations = "None"
 # normal = { family = "JetBrainsMono Nerd Font", style = "bold" }
 # normal = { family = "Monaco", style = "regular" }
 normal = { family = "Cascadia Code NF", style = "bold" }
-size = 10
+size = 10.5
 
 [cursor]
 style = { shape = "underline", blinking = "Always" }
