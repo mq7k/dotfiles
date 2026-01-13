@@ -1,7 +1,4 @@
-#!/usr/bin/python3.13
-
-import random
-import os
+#!/usr/bin/python
 
 def find_line(lines, key):
     for line in lines:

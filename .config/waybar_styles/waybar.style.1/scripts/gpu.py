@@ -1,4 +1,4 @@
-#!/usr/bin/python3.13
+#!/usr/bin/python
 
 def read_amd_card_info():
     path = '/sys/class/drm/card1/device/gpu_busy_percent'
