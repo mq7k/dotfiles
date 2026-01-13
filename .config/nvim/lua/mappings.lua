@@ -38,6 +38,16 @@ map("n", "<Space>k", function()
     end
 end, { noremap = true, silent = true, desc = "Format (Prettier or LSP)" })
 
+map("n", "<Space>c", function()
+  vim.notify("Closing all buffers", vim.log.levels.INFO)
+  vim.cmd(":%bd")
+end)
+
+map("n", "<Space>C", function()
+  vim.notify("Closing all buffers", vim.log.levels.INFO)
+  vim.cmd(":%bd|e#")
+end)
+
 -- map('n', '<Space>k', ':lua vim.lsp.buf.format()<CR>', {
 --     noremap = true, silent = true
 -- })
