@@ -8,12 +8,14 @@
     /*font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;*/
     font-family: "JetBrainsMono Nerd Font", "FontAwesome 6 Free";
     font-weight: 900;
-    font-size: .65rem;
+    /* font-size: .65rem; */
+    font-size: .6rem;
 }
 
 window#waybar {
   background-color: transparent;
-  background-color: rgba(0, 0, 0, .3);
+  /* background-color: rgba(0, 0, 0, .3); */
+  /* background-color: rgba(0, 0, 0, .8); */
   color: #ffffff;
   transition-property: background-color;
   transition-duration: .5s;
@@ -100,9 +102,10 @@ button:hover {
 #custom-gpu {
     color: #ffffff;
     border-radius: 8px;
-    /* margin: 4px 3px; */
+    margin: 4px 3px;
     padding: 0px 10px;
     /* background-color: @module-right-bg-colr; */
+    background-color: rgba(0, 0, 0, .85);
     color: white;
 }
 
