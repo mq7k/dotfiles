@@ -5,6 +5,7 @@ import random
 import sys
 import time
 import argparse
+import subprocess
 
 def update_wallpaper(directory):
     wallpapers = os.listdir(directory)
@@ -13,11 +14,13 @@ def update_wallpaper(directory):
     abs_path = f"{directory}/{the_chosen_one}"
     filename_no_ext = the_chosen_one[:the_chosen_one.rfind('.')]
 
-    code = os.system(f"hyprctl hyprpaper wallpaper ', {abs_path}, cover'")
-    if code != 0:
-        return code
+    cmd = [ 'hyprctl', 'hyprpaper', 'wallpaper', ',', f'{abs_path}', ',', 'cover' ]
+    result = subprocess.run(cmd, shell=False)
+    if result.returncode != 0:
+        return result.returncode
 
-    return os.system(f"notify-send -n {icon_path} -t 3000 'Wallpaper: \'{filename_no_ext}\''")
+    code = os.system(f"hyprctl dispatch exec \"notify-send -n {icon_path} -t 3000 'Wallpaper: \'{filename_no_ext}\''\"")
+    return code
 
 def main():
     parser = argparse.ArgumentParser()
@@ -35,7 +38,7 @@ def main():
             # The parent process.
             return 0
 
-    update_wallpaper(args.dir)
+    return update_wallpaper(args.dir)
 
 if __name__ == '__main__':
     code = main()
