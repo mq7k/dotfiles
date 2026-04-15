@@ -57,6 +57,11 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # Utility aliases.
 alias ls='ls --color'
 alias ll='ls --color -hla'
+# alias mkcd='mkdir "$1"; cd $1'
+function mkcd {
+  mkdir $1 2> /dev/null
+  cd $1
+}
 
 export LD_LIBRARY_PATH="/usr/lib:/usr/local/lib"
 export PATH="$PATH:~/.local/bin"
