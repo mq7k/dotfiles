@@ -9,8 +9,6 @@
 .config/pavucontrol.ini
 .config/dconf/**
 .config/waybar
-.config/teams
-.config/Microsoft
 .config/qalculate
 .config/Kitware
 
