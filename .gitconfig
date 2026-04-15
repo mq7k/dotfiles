@@ -5,3 +5,5 @@ lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(
 lg = lg1
 [init]
 	defaultBranch = main
+[core]
+	editor = nvim
