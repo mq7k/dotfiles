@@ -1,0 +1,8 @@
+[Unit]
+Description=Change Hyprland wallapaper
+
+[Service]
+Environment=XDG_SESSION_TYPE=wayland
+Environment=WAYLAND_DISPLAY=wayland-1
+Type=oneshot
+ExecStart=/usr/bin/python /home/manu/dotfiles/.config/hypr/scripts/changewallpaper.py --dir /home/manu/dotresources/wallpaper/
